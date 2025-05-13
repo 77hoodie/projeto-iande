@@ -20,7 +20,7 @@
 
 - Monitoramento em tempo real de dados como nível da água e peso do lixo.
 - Uso de materiais sustentáveis e energia renovável.
-- Coleta de dados que não são transparentes ou escassos para a população.
+- Coleta de dados que não são transparentes ou são escassos para a população.
   
 ---
 
