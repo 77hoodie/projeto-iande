@@ -10,9 +10,9 @@
 
 ## Objetivos do Projeto
 
-- [ ] Instalar barragens ecológicas nos canais de Belém.
-- [ ] Coletar dados sobre enchentes e quantidades de lixo nos canais.
-- [ ] Chegar em soluções viáveis e sustentáveis para essas problemáticas.
+- Instalar barragens ecológicas nos canais de Belém.
+- Coletar dados sobre enchentes e quantidades de lixo nos canais.
+- Chegar em soluções viáveis e sustentáveis para essas problemáticas.
 
 ---
 
