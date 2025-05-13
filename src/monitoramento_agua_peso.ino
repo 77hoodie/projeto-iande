@@ -1,62 +1,35 @@
-#include "Ultrasonic.h"
+#include <Ultrasonic.h>
 #include "HX711.h"
 
-#define TRIG_PIN 9
-#define ECHO_PIN 8
-#define RELAY_PIN 7
-#define DOUT  A1
-#define CLK   A0
+#define TRIGGER 9
+#define ECHO 8
+#define DOUT     A1
+#define CLK      A0
 
+Ultrasonic ultrasonic(TRIGGER, ECHO);
 HX711 balanca;
 
-long duration;
-int distance;
-int nivelMax = 10;
-int nivelMin = 100;
-
 float peso;
-float pesoMax = 10.0;
 
 void setup() {
-  pinMode(TRIG_PIN, OUTPUT);
-  pinMode(ECHO_PIN, INPUT);
-  pinMode(RELAY_PIN, OUTPUT);
-  digitalWrite(RELAY_PIN, LOW);
-
   Serial.begin(9600);
 
   balanca.begin(DOUT, CLK);
-  balanca.set_scale(2280.f);
+  balanca.set_scale(2280.f); // Calibrar peso, esse valor é genérico
   balanca.tare();
 }
 
 void loop() {
-  digitalWrite(TRIG_PIN, LOW);
-  delayMicroseconds(2);
-  digitalWrite(TRIG_PIN, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(TRIG_PIN, LOW);
+  
+  long microsec = ultrasonic.timing();
+  float distancia_cm = ultrasonic.convert(microsec, Ultrasonic::CM);
 
-  duration = pulseIn(ECHO_PIN, HIGH);
-  distance = duration * 0.034 / 2;
-
-  Serial.print("Nivel da agua (cm): ");
-  Serial.println(distance);
-
-  if (distance <= nivelMax) {
-    digitalWrite(RELAY_PIN, LOW);
-  } else if (distance >= nivelMin) {
-    digitalWrite(RELAY_PIN, HIGH);
-  }
+  Serial.print("Nível da agua (cm): ");
+  Serial.println(distancia_cm);
 
   peso = balanca.get_units(5);
-
   Serial.print("Peso atual (kg): ");
-  Serial.println(peso);
-
-  if (peso >= pesoMax) {
-    Serial.println("Peso máximo atingido");
-  }
+  Serial.println(peso, 2);
 
   delay(1000);
 }
