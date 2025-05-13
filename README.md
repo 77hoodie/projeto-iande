@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="./assets/iande_logo.png" alt="Logo" width="200"/>
+</p>
+
 # Projeto Iandê
 
 > O Projeto Iandê visa coletar dados sobre os canais de Belém por meio de barragens ecológicas, a fim de proporcionar uma melhor qualidade de vida para a população.
