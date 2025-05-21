@@ -7,6 +7,11 @@ HX711 balanca;
 
 float peso;
 
+const int sensorAgua = A0; // Trocar pino
+
+int valorSensorAgua = 0;
+int saidaSensorAgua = 0;
+
 void setup() {
   Serial.begin(9600);
 
@@ -21,5 +26,13 @@ void loop() {
   Serial.print("Peso atual (kg): ");
   Serial.println(peso, 2);
 
-  delay(1000);
+  valorSensorAgua = analogRead(sensorAgua);
+  saidaSensorAgua = map(valorSensorAgua, 0, 630, 0, 100);
+
+  Serial.println("\nSensor:");
+  Serial.println(valorSensorAgua);
+  Serial.println("Porcentagem:");
+  Serial.println(saidaSensorAgua);
+
+  delay(1500);
 }
