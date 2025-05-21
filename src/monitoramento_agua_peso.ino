@@ -1,12 +1,8 @@
-#include <Ultrasonic.h>
 #include "HX711.h"
 
-#define TRIGGER 9
-#define ECHO 8
 #define DOUT     A1
 #define CLK      A0
 
-Ultrasonic ultrasonic(TRIGGER, ECHO);
 HX711 balanca;
 
 float peso;
@@ -20,12 +16,6 @@ void setup() {
 }
 
 void loop() {
-  
-  long microsec = ultrasonic.timing();
-  float distancia_cm = ultrasonic.convert(microsec, Ultrasonic::CM);
-
-  Serial.print("Nível da agua (cm): ");
-  Serial.println(distancia_cm);
 
   peso = balanca.get_units(5);
   Serial.print("Peso atual (kg): ");
