@@ -1,38 +1,51 @@
 #include "HX711.h"
 
-#define DOUT     A1
-#define CLK      A0
+#define DOUT 3
+#define CLK 2
+#define SENSOR_AGUA_PIN A0
 
 HX711 balanca;
 
-float peso;
+const int AGUA_THRESHOLD = 300;
+const int INTERVALO_LEITURA = 1500;
+const int MEDIAS_PESO = 5;
+const float CALIBRATION_FACTOR = -298.12;
 
-const int sensorAgua = A0; // Trocar pino
-
-int valorSensorAgua = 0;
-int saidaSensorAgua = 0;
+bool ultimoEstadoAgua = false;
 
 void setup() {
-  Serial.begin(9600);
-
+  Serial.begin(115200);
+  
   balanca.begin(DOUT, CLK);
-  balanca.set_scale(2280.f); // Calibrar peso, esse valor é genérico
+  balanca.set_scale(CALIBRATION_FACTOR);
   balanca.tare();
+  
+  pinMode(SENSOR_AGUA_PIN, INPUT);
+  
+  delay(2000);
+  
+  Serial.println("Timestamp_ms,Peso_kg,AguaPresente,LeituraSensorAgua,EstadoMudou");
 }
 
 void loop() {
-
-  peso = balanca.get_units(5);
-  Serial.print("Peso atual (kg): ");
-  Serial.println(peso, 2);
-
-  valorSensorAgua = analogRead(sensorAgua);
-  saidaSensorAgua = map(valorSensorAgua, 0, 630, 0, 100);
-
-  Serial.println("\nSensor:");
-  Serial.println(valorSensorAgua);
-  Serial.println("Porcentagem:");
-  Serial.println(saidaSensorAgua);
-
-  delay(1500);
+  unsigned long timestamp = millis();
+  
+  float peso_kg = balanca.get_units(MEDIAS_PESO);
+  
+  int valorSensorAgua = analogRead(SENSOR_AGUA_PIN);
+  bool estadoAtualAgua = (valorSensorAgua > AGUA_THRESHOLD);
+  bool estadoMudou = (estadoAtualAgua != ultimoEstadoAgua);
+  ultimoEstadoAgua = estadoAtualAgua;
+  
+  Serial.print(timestamp);
+  Serial.print(",");
+  Serial.print(peso_kg, 5);
+  Serial.print(",");
+  Serial.print(estadoAtualAgua ? "1" : "0");
+  Serial.print(",");
+  Serial.print(valorSensorAgua);
+  Serial.print(",");
+  Serial.println(estadoMudou ? "1" : "0");
+  
+  delay(INTERVALO_LEITURA);
 }
