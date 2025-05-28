@@ -10,12 +10,10 @@ def load_data():
     try:
         df = pd.read_csv('dados_balanca_agua.csv')
         
-        # Converte colunas
         df['DataHora'] = pd.to_datetime(df['DataHora'])
         df['Peso_g'] = pd.to_numeric(df['Peso_g']).round(1)
         df['AguaPresente'] = df['AguaPresente'].astype(int)
         
-        # Calcula tempo decorrido
         df['TempoDecorrido'] = (df['DataHora'] - df['DataHora'].min()).dt.total_seconds()
         
         return df.sort_values('DataHora')
