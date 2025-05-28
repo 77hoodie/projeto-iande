@@ -9,7 +9,7 @@ HX711 balanca;
 const int AGUA_THRESHOLD = 300;
 const int INTERVALO_LEITURA = 1500;
 const int MEDIAS_PESO = 5;
-const float CALIBRATION_FACTOR = -298.12;
+const float CALIBRATION_FACTOR = -298.12; // Ajustar conforme o necessário, esse foi o mais correto encontrado
 
 bool ultimoEstadoAgua = false;
 
